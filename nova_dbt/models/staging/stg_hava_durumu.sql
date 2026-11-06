@@ -1,6 +1,5 @@
 with source as (
 
-    
     select * from {{ ref('hava_durumu') }}
 
 ),
@@ -8,8 +7,10 @@ with source as (
 renamed_and_filtered as (
 
     select
-        cast(date as date) as tarih,
-        trim(cast(city as varchar)) as sehir,
+        cast(left(cast(date as varchar), 10) as date) as tarih,
+        
+        upper(trim(cast(city as varchar))) as sehir,
+        
         cast(plate_code as varchar) as plaka_kodu,
         cast(replace(cast(max_temp as varchar), ',', '.') as double) as max_sicaklik,
         cast(replace(cast(min_temp as varchar), ',', '.') as double) as min_sicaklik,
@@ -23,7 +24,7 @@ renamed_and_filtered as (
         cast(weather_desc as varchar) as hava_durumu_ozeti
 
     from source
-    where cast(date as date) between '2024-01-01' and '2024-12-31'
+    where cast(left(cast(date as varchar), 10) as date) between '2024-01-01' and '2024-12-31'
 
 )
 

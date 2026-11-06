@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: gunlervesatislar
+    description: "Hafta içi ve hafta sonu alışveriş sepeti ve gün bazlı dağılım analizi."
+    columns:
+      - name: zaman_dilimi
+        tests:
+          - not_null
+      - name: kategori
+        tests:
+          - not_null
+
+  - name: mart_havadurumu_ciro
+    description: "Hava durumu koşullarına göre ciro ve satış dağılımı."
+    columns:
+      - name: hava_durumu_ozeti
+        tests:
+          - not_null
+          - unique
+
+  - name: mart_indirim_kar
+    description: "İndirim oranlarının kârlılığa etkisi."
+    columns:
+      - name: indirim_orani
+        tests:
+          - not_null
+          - unique
+
+  - name: mart_kanal_satis
+    description: "Online ve mağaza kanal bazlı satış performansları."
+    columns:
+      - name: satis_kanali
+        tests:
+          - not_null
+
+  - name: mart_mevsimsel_urun
+    description: "Sıcaklık ve mevsim geçişlerinin analiz tablosu."
+    columns:
+      - name: toplam_ciro
+        tests:
+          - not_null
+
+  - name: yagisvesatislar
+    description: "Yağışlı ve yağışsız günlerde ürün bazlı satış endeksleri."
+    columns:
+      - name: urun
+        tests:
+          - not_null
+          - unique

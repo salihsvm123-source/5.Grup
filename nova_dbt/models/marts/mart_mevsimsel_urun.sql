@@ -8,6 +8,6 @@ select
     kategori,
     sum(miktar) as toplam_satilan_adet,
     sum(toplam_ciro) as toplam_ciro
-from {{ ref('perakende_satis') }}
+from {{ ref('satislar') }}
 group by 1, kategori
 order by mevsim, toplam_ciro desc

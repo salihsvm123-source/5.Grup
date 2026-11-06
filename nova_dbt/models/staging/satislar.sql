@@ -1,6 +1,5 @@
 with source as (
 
-    
     select * from {{ ref('perakende_satis') }}
 
 ),
@@ -9,7 +8,8 @@ renamed_and_cleaned as (
 
     select
         cast(SiparisID as varchar) as siparis_id,
-        cast(Tarih as date) as siparis_tarihi,
+        -- Noktalı tarih formatını (DD.MM.YYYY) doğru şekilde tarihe çeviriyoruz:
+        strptime(cast(Tarih as varchar), '%d.%m.%Y')::date as siparis_tarihi,
         cast(Musteri_ID as varchar) as musteri_id,
         cast(Sehir as varchar) as sehir,
         cast(Bolge as varchar) as bolge,
@@ -18,11 +18,9 @@ renamed_and_cleaned as (
         cast(Urun as varchar) as urun_adi,
         cast(Miktar as integer) as miktar,
         
-        
         cast(replace(cast(BirimFiyat as varchar), ',', '.') as double) as birim_fiyat,
         cast(replace(cast(Maliyet as varchar), ',', '.') as double) as maliyet,
         cast(replace(cast(IndirimOrani as varchar), ',', '.') as double) as indirim_orani,
-        
         
         round(
             cast(Miktar as double) * 
