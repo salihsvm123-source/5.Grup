@@ -13,7 +13,7 @@ with base as (
         ciro,
         toplam_maliyet,
         kar
-    from {{ source('main', 'mart_satis_hava_durumu') }}D
+    from {{ ref('satislar') }}
     where sehir is not null
       and kategori is not null
 
