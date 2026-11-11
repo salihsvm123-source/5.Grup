@@ -1,4 +1,4 @@
-# 📊 NOVA | Perakende Satış ve Hava Durumu Analizi
+# 📊 NOVA | Hava Durumu Ve Satış Analizi
 
 Perakende satış verilerini hava durumu kayıtlarıyla birleştirerek satış performansını, dönemsel alışveriş davranışlarını ve kârlılığı inceleyen bir **dbt ve DuckDB veri analizi projesi**.
 
