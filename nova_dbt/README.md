@@ -217,11 +217,11 @@ Bu kontrollerin tanımlanmış olması, testlerin başarıyla geçtiği anlamın
 ## 👥 Proje Ekibi
 
 **5. Grup**
-Mustafa Büyükgüçlü
-Salih Sevim
-Mustafa Huneys Gülaran
-Mustafa Kalemoğlu
-Ahmet Basri Güneş
+- **Mustafa Büyükgüçlü
+- **Salih Sevim
+- **Mustafa Huneys Gülaran
+- **Mustafa Kalemoğlu
+- **Ahmet Basri Güneş
 
 Proje deposu: [salihsvm123-source/5.Grup](https://github.com/salihsvm123-source/5.Grup)
 
