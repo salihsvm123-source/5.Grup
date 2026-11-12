@@ -1,4 +1,4 @@
-# 📊 NOVA | Hava Durumu Ve Satış Analizi
+# 📊 NOVA | Perakende Satış ve Hava Durumu Analizi
 
 Perakende satış verilerini hava durumu kayıtlarıyla birleştirerek satış performansını, dönemsel alışveriş davranışlarını ve kârlılığı inceleyen bir **dbt ve DuckDB veri analizi projesi**.
 
@@ -80,6 +80,39 @@ Yağış endeksi, bir ürünün yağışlı koşullardaki adet payını, eşleş
 
 Bu ölçüt günlük ortalama satış artışı değildir. Mevcut model, hava durumu açıklamasında `rain`, `drizzle` veya `snow` geçen kayıtları yağışlı olarak sınıflandırır.
 
+## 🖼️ Dashboard ve Görsel Bulgular
+
+Aşağıdaki ekran görüntüleri, proje ekibinin paylaştığı raporlama ekranlarını gösterir. Bulgular görsellerdeki değerlerden okunmuştur; kaynak veriler ve dashboard ölçüleri yeniden çalıştırılarak doğrulanmamıştır. Görseller statiktir; şehir filtresi README içinde etkileşimli çalışmaz.
+
+### Mevsim, Satış Kanalı ve Kategori Analizi
+
+![Mevsimlere göre kategori cirosu, hava durumuna göre satış kanalları, hafta içi ve hafta sonu cirosu ve şehir filtresi içeren dashboard](images/mevsim-kanal-kategori.png)
+
+Bu ekran, `mart_mevsimsel_urun`, `mart_kanal_satis` ve `gunlervesatislar` modellerinin ele aldığı soruları bir arada sunar. Şehir ve kategori görünümü ise kategori kârlılığı modelinin amaçladığı kırılımla ilişkilidir; görselin hangi ölçüyle üretildiği ayrıca doğrulanmalıdır.
+
+- **Mevsimsel dağılım:** Elektronik kategorisi dört mevsimde de en yüksek ciroyu gösterir. Sonbahardaki elektronik cirosu yaklaşık 1,1 milyon; ilkbaharda 927 bin, kışın 826 bin ve yazın 800 bindir.
+- **Satış kanalları:** Şiddetli yağmurda online kanalın ciro payı %87,35'tir. Yoğun kar yağışında ise mağaza kanalının payı %71,36'ya yükselir. Bu yüzdeler ilgili hava koşulundaki kanal dağılımıdır; tek başına toplam satışların arttığını göstermez.
+- **Hafta içi ve hafta sonu:** Görünen tüm kategorilerde toplam hafta içi cirosu hafta sonundan yüksektir. Ancak hafta içi gün sayısı daha fazla olduğundan, günlük performans karşılaştırması için tutarlar gün sayısına bölünmelidir.
+- **Şehir ve kategori alanı:** Şehir filtresiyle kategori görünümü sunulur. Treemap başlığı “ciro payı” olsa da görünen yüzdeler toplamda %100'ü aşar. Ölçü tanımı doğrulanmadan bu değerler ciro payı veya kesin kâr marjı olarak yorumlanmamalıdır.
+
+### Genel Performans, Yağış ve İndirim Analizi
+
+![Toplam ciro, kâr, maliyet ve kâr marjı kartları ile yağışlı günlerde ürün endeksi ve indirim oranına göre ortalama kâr grafikleri](images/performans-yagis-indirim.png)
+
+Bu ekran, genel performans göstergelerini `yagisvesatislar` ve `mart_indirim_kar` modellerinin konularıyla birlikte sunar.
+
+| Gösterge | Ekranda görünen değer |
+|---|---:|
+| Toplam ciro | 7.206.829 |
+| Toplam kâr | 2.525.740 |
+| Toplam maliyet | 1.556.408 |
+| Kâr marjı | %35 |
+
+Görselde para birimi belirtilmediği için tutarlara para birimi eklenmemiştir. Kârın ciroya oranı yaklaşık %35 ile uyumludur. Ancak cirodan gösterilen maliyet çıkarıldığında 5.650.421 elde edilir; bu değer gösterilen kâra eşit değildir. Kartların filtre kapsamları ve maliyet hesaplama biçimleri kontrol edilmelidir.
+
+- **Yağışlı koşullarda ürünler:** Roman yaklaşık 1,6 endeksle öndedir; mont ve şampuan da 1'in üzerindedir. Bu, yağışlı satış paylarının genel yağışlı satış payından yüksek olduğunu ifade eder. Örneğin 1,6 endeks, günlük satışların %60 arttığı anlamına gelmez. Grafiğin “yağmurlu” başlığına karşılık mevcut SQL sınıflaması kar yağışını da kapsar.
+- **İndirim ve ortalama kâr:** İndirim uygulanmayan grupta işlem başına ortalama kâr yaklaşık 1,5 bin iken, %20 indirimde 793,7; %30 indirimde 353,4 ve %40 indirimde 215,2 görünür. Gruplar arasında indirim yükseldikçe ortalama kâr düşmektedir. Ürün karması ve maliyet farkları kontrol edilmeden bu ilişki yalnızca indirime bağlanmamalıdır.
+
 ## 🛠️ Kullanılan Teknolojiler
 
 | Teknoloji | Projedeki görevi |
@@ -90,7 +123,7 @@ Bu ölçüt günlük ortalama satış artışı değildir. Mevcut model, hava du
 | **CSV** | Ham satış ve hava durumu verilerinin saklanması |
 | **GitHub** | Kod ve proje dokümantasyonunun paylaşılması |
 
-Depoda hazır bir dashboard veya grafik çıktısı bulunmamaktadır. Projenin mevcut çıktısı analiz modelleridir.
+Proje ekibinin paylaştığı dashboard ekran görüntüleri yukarıda açıklanmıştır. Etkileşimli raporun kaynak dosyası bu dokümantasyon paketinde yer almaz.
 
 ## 🚀 Kurulum ve Çalıştırma
 
@@ -202,7 +235,7 @@ Bu kontrollerin tanımlanmış olması, testlerin başarıyla geçtiği anlamın
 - **Eşleşme kalitesi:** Şehir adlarında büyük harfe çevirme ve kenar boşluklarını temizleme uygulanır. Farklı yazımların ve şehir–tarih bazındaki olası yinelenen hava kayıtlarının ayrıca kontrol edilmesi gerekir.
 - **Sipariş ve sepet ölçümü:** Bazı modeller `count(siparis_id)` ve `avg(toplam_ciro)` kullanır. Aynı sipariş birden fazla satırdaysa bu değerler benzersiz sipariş sayısını ve gerçek ortalama sepet tutarını temsil etmeyebilir.
 - **Mevsim analizi:** Mevsimsel model, ayları mevsimlere ayırır; doğrudan sıcaklığa göre analiz yapmaz.
-- **Bulgular:** Bu README'de hesaplanmış sonuç, satış artışı yüzdesi veya doğrulanmış işletme önerisi sunulmamaktadır.
+- **Görsel bulgular:** Dashboard değerleri ekran görüntülerinden aktarılmıştır. Finansal kartlar ve treemap ölçüsü için açıklanan tutarsızlıklar doğrulanmalıdır; modeller bu çalışma kapsamında yeniden çalıştırılmamıştır.
 
 ## 📌 Geliştirme Planı
 
@@ -211,21 +244,20 @@ Bu kontrollerin tanımlanmış olması, testlerin başarıyla geçtiği anlamın
 - [ ] Veri kaynaklarını, kapsamlarını ve kullanım koşullarını açıklamak.
 - [ ] Sipariş bazında sepet tutarı hesaplamalarını doğrulamak.
 - [ ] Şehir–tarih eşleşmeleri ve yinelenen kayıtlar için kontroller eklemek.
-- [ ] Grafikler ve etkileşimli bir raporlama ekranı hazırlamak.
+- [x] Paylaşılan dashboard ekran görüntülerini ve açıklamalarını README’ye eklemek.
+- [ ] Etkileşimli raporun kaynak dosyasını ve ölçü tanımlarını belgelemek.
 - [ ] Doğrulanmış analiz sonuçlarını ve yorumlarını dokümantasyona eklemek.
-
-## 👥 Proje Ekibi
-
-**5. Grup**
-- Mustafa Büyükgüçlü
-- Salih Sevim
-- Mustafa Huneys Gülaran
-- Mustafa Kalemoğlu
-- Ahmet Basri Güneş
-
-Proje deposu: [salihsvm123-source/5.Grup](https://github.com/salihsvm123-source/5.Grup)
 
 ## 📄 Lisans
 
 Depoda ayrı bir lisans dosyası bulunmamaktadır. Kod ve veri kullanım koşulları proje sahipleri tarafından ayrıca belirtilmelidir.
 
+## 👥 Proje Ekibi
+
+**5. Grup**
+
+- Mustafa Büyükgüçlü
+- Salih Sevim
+- Mustafa Huneys Gülaran
+- Mustafa Kalemoğlu
+- Ahmet Basri Güneş
